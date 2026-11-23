@@ -1,0 +1,47 @@
+name: test-and-publish
+
+# Code is pushed to the `staging` branch. This workflow runs the test-suite and,
+# only if it passes, the Actions bot commits the result to `main`.
+on:
+  push:
+    branches: [staging]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Run test-suite
+        run: make test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+      - name: Commit staging snapshot to main
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          MSG="$(git log -1 --format=%B origin/staging)"
+          if git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
+            git fetch origin main
+            git checkout -B main origin/main
+            git rm -rfq .
+          else
+            git checkout --orphan main
+            git rm -rfq .
+          fi
+          git checkout origin/staging -- .
+          git add -A
+          if git diff --cached --quiet; then echo "nothing to publish"; exit 0; fi
+          git commit -m "$MSG"
+          git push origin main
