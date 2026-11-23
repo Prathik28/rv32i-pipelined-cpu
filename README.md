@@ -1,5 +1,7 @@
 # 5-Stage Pipelined RV32I Processor (Verilog)
 
+[![CI](https://github.com/Prathik28/rv32i-pipelined-cpu/actions/workflows/publish.yml/badge.svg?branch=staging)](https://github.com/Prathik28/rv32i-pipelined-cpu/actions/workflows/publish.yml)
+
 A complete, verified 5-stage pipelined **RISC-V RV32I** core (IF → ID → EX → MEM → WB)
 handling all three hazard classes. (Note: MIPS and RISC-V are different ISAs; this is RISC-V,
 whose pipeline is the classic MIPS-style one.)
