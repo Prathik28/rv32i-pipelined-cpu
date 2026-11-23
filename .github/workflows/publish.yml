@@ -1,7 +1,7 @@
 name: test-and-publish
 
 # Code is pushed to the `staging` branch. This workflow runs the test-suite and,
-# only if it passes, the Actions bot commits the result to `main`.
+# only if it passes, Actions commits the result to `main` as the repo owner.
 on:
   push:
     branches: [staging]
@@ -29,8 +29,8 @@ jobs:
           fetch-depth: 0
       - name: Commit staging snapshot to main
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name  "${{ github.repository_owner }}"
+          git config user.email "${{ github.repository_owner_id }}+${{ github.repository_owner }}@users.noreply.github.com"
           MSG="$(git log -1 --format=%B origin/staging)"
           if git ls-remote --exit-code --heads origin main >/dev/null 2>&1; then
             git fetch origin main
