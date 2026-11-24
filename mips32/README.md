@@ -92,7 +92,13 @@ Yosys only, no place-and-route.
 
 The CI `mips-timing` job runs Yosys + nextpnr for an ECP5 LFE5U-85F (speed grade 6) with no local install.
 
-_(figures for this design are filled in after the first CI run of this version)_
+| LUT4 (TRELLIS_COMB) | Flip-flops | Block RAM | Multipliers (MULT18X18D) | Estimated Fmax |
+|---|---|---|---|---|
+| 4409 / 83640 (5%) | 795 | 6 / 208 | 8 / 156 | **≈ 43 MHz** (passes a 25 MHz target) |
+
+nextpnr stops optimising once the 25 MHz target is met, so the true limit may be somewhat higher. The
+MIPS core is faster than the RISC-V core's ≈ 27 MHz estimate on the same chip family mainly because
+its memories map to block RAM and it has no PMP/atomic/misaligned-access logic in front of the memory stage.
 
 This is a single-seed estimate for the ECP5 family against a 25 MHz target, not a result for any other
 FPGA. An example top level (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's 100 MHz clock
