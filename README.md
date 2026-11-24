@@ -120,7 +120,15 @@ true dual-port block RAM.
 The CI `timing` job runs Yosys + nextpnr for an ECP5 LFE5U-85F (speed grade 6; the 25F is too small now that the memories live in logic cells) with no local install;
 its result is in the job summary and the `ecp5-timing` artifact of every run.
 
-_(figures for the current design are filled in after the first CI run of this version)_
+| LUT4 (TRELLIS_COMB) | Flip-flops | Block RAM | Multipliers (MULT18X18D) | Estimated Fmax |
+|---|---|---|---|---|
+| 27688 / 83640 (33%) | 1349 | 0 (memories are built from LUTs) | 4 / 156 | **≈ 27 MHz** (passes a 25 MHz target) |
+
+The earlier, simpler core (no PMP, atomics, wait states or misaligned handling) reached ≈ 40 MHz on
+the smaller ECP5-25F. The new core is slower mainly because its memories have asynchronous reads and
+live in logic cells, and because the address checks (map, PMP, alignment) now sit in front of the
+memory stage. Registering the memory read (true block RAM) would trade one more pipeline stage for
+a much higher clock; that is not done here.
 
 This is a single-seed estimate for the ECP5 family against a 25 MHz target (nextpnr stops optimising
 once the target is met, so the true limit may be somewhat higher). It says nothing exact about the
