@@ -90,7 +90,18 @@ it is almost all divides at ~34 cycles each.)
 |---|---|---|---|---|
 | 2330 | 981 | 4 | 4× RAMB18 + 1× RAMB36 | 30× RAM32M (register file) |
 
-Yosys only: there is **no place-and-route**, so no Fmax figure is claimed. The example top level
+### Place and route (open-source, Lattice ECP5, `sw/ecp5_timing.sh`)
+
+The CI `timing` job runs Yosys + nextpnr for an ECP5 LFE5U-25F (speed grade 6) with no local install:
+
+| LUT4 (TRELLIS_COMB) | Flip-flops | Block RAM (DP16KD) | Multipliers (MULT18X18D) | Estimated Fmax |
+|---|---|---|---|---|
+| 5273 / 24288 (21%) | 979 | 6 / 56 | 4 / 28 | **≈ 40 MHz** (passes a 25 MHz target) |
+
+This is a single-seed estimate for the ECP5 family, run against a 25 MHz target (nextpnr stops
+optimising once the target is met, so the true limit may be somewhat higher). It says nothing exact
+about the Basys 3's Artix-7. The single-cycle multiplier and the forwarding paths into EX are the
+likely critical paths. The Xilinx numbers above come from Yosys alone with no place-and-route. The example top level
 (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's 100 MHz clock by 4 and shows a binary
 counter (`fpga/blink.s`) on the LEDs. It has been simulated but **never run on hardware**.
 
@@ -143,5 +154,5 @@ docs/  hazard_demo.s and the generated SVGs
 * No C, A, F/D extensions; instruction memory cannot be written at run time (no `fence.i` semantics)
 * Misaligned accesses trap (a legal implementation choice) instead of being emulated
 * No caches or memory wait states; data RAM addresses alias modulo 4 KiB
-* Not run on real hardware; no timing closure results
+* Not run on real hardware; the only timing figure is the ECP5 place-and-route estimate above
 * This is a RISC-V design. A MIPS32 variant is not included.
