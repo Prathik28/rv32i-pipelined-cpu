@@ -11,4 +11,4 @@
     lw   x8, 0x104(x0)
     andi x8, x8, 0xfc     # load result feeds address computation
     lw   x9, 0x100(x8)    # load-use through the address operand
-    ecall
+    halt

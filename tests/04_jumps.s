@@ -17,4 +17,4 @@ end:
     jalr x15, 0(x14)      # indirect jump (base forwarded), link in x15
     li   x16, 666         # flushed
 tgt: li  x17, 77
-    ecall
+    halt

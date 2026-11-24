@@ -42,4 +42,4 @@ noswap:
     blt  x4, x3, inner
     addi x3, x3, -1
     bnez x3, outer
-    ecall
+    halt

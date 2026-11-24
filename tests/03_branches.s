@@ -30,4 +30,4 @@ loop: addi x6, x6, 1      # backward loop: taken 9 times
     blt  x7, x1, loop
     j    done
 bad: li  x20, 999
-done: ecall
+done: halt

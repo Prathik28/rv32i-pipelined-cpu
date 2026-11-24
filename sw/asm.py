@@ -8,7 +8,14 @@ REG = {f'x{i}': i for i in range(32)}
 REG.update({n: i for i, n in enumerate(ABI)}); REG['fp'] = 8
 
 R_OPS = {'add':(0,0),'sub':(0,0x20),'sll':(1,0),'slt':(2,0),'sltu':(3,0),'xor':(4,0),
-         'srl':(5,0),'sra':(5,0x20),'or':(6,0),'and':(7,0)}
+         'srl':(5,0),'sra':(5,0x20),'or':(6,0),'and':(7,0),
+         'mul':(0,1),'mulh':(1,1),'mulhsu':(2,1),'mulhu':(3,1),
+         'div':(4,1),'divu':(5,1),'rem':(6,1),'remu':(7,1)}
+CSR_NAMES = {'mstatus':0x300,'misa':0x301,'mie':0x304,'mtvec':0x305,'mscratch':0x340,'mepc':0x341,
+             'mcause':0x342,'mtval':0x343,'mip':0x344,'mcycle':0xB00,'minstret':0xB02,'mhartid':0xF14,
+             'cycle':0xC00,'instret':0xC02}
+CSR_OPS = {'csrrw':1,'csrrs':2,'csrrc':3,'csrrwi':5,'csrrsi':6,'csrrci':7}
+
 I_OPS = {'addi':0,'slti':2,'sltiu':3,'xori':4,'ori':6,'andi':7}
 SH_OPS = {'slli':(1,0),'srli':(5,0),'srai':(5,0x20)}
 LD_OPS = {'lb':0,'lh':1,'lw':2,'lbu':4,'lhu':5}
@@ -66,6 +73,15 @@ def expand(mn, a):
     if mn == 'ble':  return [('bge',[a[1],a[0],a[2]])]
     if mn == 'bgtu': return [('bltu',[a[1],a[0],a[2]])]
     if mn == 'bleu': return [('bgeu',[a[1],a[0],a[2]])]
+    if mn == 'halt':  return [('lui',['x31','0x10000']),('sw',['x0','0(x31)'])]
+    if mn == 'csrr':  return [('csrrs',[a[0],a[1],'x0'])]
+    if mn == 'csrw':  return [('csrrw',['x0',a[0],a[1]])]
+    if mn == 'csrs':  return [('csrrs',['x0',a[0],a[1]])]
+    if mn == 'csrc':  return [('csrrc',['x0',a[0],a[1]])]
+    if mn == 'csrwi': return [('csrrwi',['x0',a[0],a[1]])]
+    if mn == 'csrsi': return [('csrrsi',['x0',a[0],a[1]])]
+    if mn == 'csrci': return [('csrrci',['x0',a[0],a[1]])]
+    if mn == 'la':    return [('auipc',[a[0],'%pcrel_hi:'+a[1]]),('addi',[a[0],a[0],'%pcrel_lo:'+a[1]])]
     if mn == 'li':
         v = num(a[1]) & 0xffffffff
         sv = v - (1<<32) if v & 0x80000000 else v
@@ -78,7 +94,10 @@ def expand(mn, a):
         return out
     return [(mn, a)]
 
+LISTING = []
+
 def assemble(text):
+    global LISTING
     items, labels = [], {}
     for ln, raw in enumerate(text.splitlines(), 1):
         line = re.split(r'#|//', raw)[0].strip()
@@ -93,6 +112,7 @@ def assemble(text):
         for e in expand(mn, split(args)):
             items.append((e[0], e[1], ln))
 
+    LISTING = [f'{mn} {", ".join(a)}'.strip() for mn, a, ln in items]
     words = []
     for idx, (mn, a, ln) in enumerate(items):
         pc = idx * 4
@@ -100,7 +120,11 @@ def assemble(text):
             return labels[s] - pc if s in labels else num(s)
         try:
             if   mn in R_OPS:  f3,f7 = R_OPS[mn]; w = enc_r(f7,reg(a[2]),reg(a[1]),f3,reg(a[0]),0x33)
-            elif mn in I_OPS:  w = enc_i(num(a[2]),reg(a[1]),I_OPS[mn],reg(a[0]),0x13)
+            elif mn in I_OPS:
+                if a[2].startswith('%pcrel_lo:'):
+                    off = labels[a[2][10:]] - (pc - 4); lo = off - (((off + 0x800) >> 12) << 12)
+                    w = enc_i(lo,reg(a[1]),I_OPS[mn],reg(a[0]),0x13)
+                else: w = enc_i(num(a[2]),reg(a[1]),I_OPS[mn],reg(a[0]),0x13)
             elif mn in SH_OPS:
                 f3,f7 = SH_OPS[mn]; sh = num(a[2])
                 if not 0 <= sh < 32: raise ValueError('shift amount')
@@ -109,12 +133,23 @@ def assemble(text):
             elif mn in ST_OPS: off,rs1 = mem_operand(a[1]); w = enc_s(off,reg(a[0]),rs1,ST_OPS[mn],0x23)
             elif mn in BR_OPS: w = enc_b(target(a[2]),reg(a[1]),reg(a[0]),BR_OPS[mn],0x63)
             elif mn == 'lui':   w = enc_u(num(a[1]),reg(a[0]),0x37)
-            elif mn == 'auipc': w = enc_u(num(a[1]),reg(a[0]),0x17)
+            elif mn == 'auipc':
+                if a[1].startswith('%pcrel_hi:'):
+                    off = labels[a[1][10:]] - pc; hi = ((off + 0x800) >> 12) & 0xfffff
+                    w = enc_u(hi,reg(a[0]),0x17)
+                else: w = enc_u(num(a[1]),reg(a[0]),0x17)
             elif mn == 'jal':   w = enc_j(target(a[1]),reg(a[0]),0x6f)
             elif mn == 'jalr':
                 if len(a) == 2 and '(' in a[1]: off,rs1 = mem_operand(a[1])
                 else: rs1, off = reg(a[1]), (num(a[2]) if len(a) > 2 else 0)
                 w = enc_i(off,rs1,0,reg(a[0]),0x67)
+            elif mn in CSR_OPS:
+                c = CSR_NAMES[a[1]] if a[1] in CSR_NAMES else num(a[1])
+                f3 = CSR_OPS[mn]
+                src = (num(a[2]) & 31) if f3 >= 5 else reg(a[2])
+                w = (c << 20) | (src << 15) | (f3 << 12) | (reg(a[0]) << 7) | 0x73
+            elif mn == 'mret':   w = 0x30200073
+            elif mn == '.word':  w = num(a[0])
             elif mn == 'ecall':  w = 0x00000073
             elif mn == 'ebreak': w = 0x00100073
             else: raise ValueError(f'unknown mnemonic {mn!r}')
