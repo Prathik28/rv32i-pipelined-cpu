@@ -19,4 +19,4 @@ sum: lw  x8, 0(x5)
     addi x5, x5, 4
     addi x3, x3, 1
     bne  x3, x4, sum
-    ecall
+    halt

@@ -18,4 +18,4 @@
     lw   x13, 0x90(x0)
     sw   x13, 0x94(x0)
     lw   x14, 0x94(x0)
-    ecall
+    halt

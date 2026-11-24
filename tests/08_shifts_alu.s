@@ -19,4 +19,4 @@
     xori x18, x1, -1
     ori  x19, x2, 0x7F0
     andi x20, x1, 0x7FF
-    ecall
+    halt

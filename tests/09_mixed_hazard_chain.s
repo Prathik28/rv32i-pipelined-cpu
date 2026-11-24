@@ -12,7 +12,7 @@ taken:
     lw   x6, 0x64(x0)
     jal  x7, sub1
     add  x8, x6, x9       # uses result of subroutine
-    ecall
+    halt
 skip: li x5, 222
 sub1: addi x9, x6, 100
     jalr x0, 0(x7)

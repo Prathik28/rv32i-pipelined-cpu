@@ -14,10 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Icarus Verilog
-        run: sudo apt-get update && sudo apt-get install -y iverilog
-      - name: Run test-suite
+      - name: Install Icarus Verilog and Yosys
+        run: sudo apt-get update && sudo apt-get install -y iverilog yosys
+      - name: Run test-suite (RTL vs golden ISS)
         run: make test
+      - name: Synthesis check (Xilinx 7-series, Yosys)
+        run: make synth
+      - uses: actions/upload-artifact@v4
+        with:
+          name: synthesis-report
+          path: build/synth_stat.txt
 
   publish:
     needs: test

@@ -1,0 +1,375 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1116" height="840" font-family="monospace" font-size="10.5">
+<rect width="1116" height="840" fill="white"/>
+<text x="6" y="41" font-weight="bold" fill="#234">IF</text>
+<text x="6" y="71" font-weight="bold" fill="#234">ID</text>
+<text x="6" y="101" font-weight="bold" fill="#234">EX</text>
+<text x="6" y="131" font-weight="bold" fill="#234">MEM</text>
+<text x="6" y="161" font-weight="bold" fill="#234">WB</text>
+<text x="103.0" y="14" text-anchor="middle" fill="#666">cycle 0</text>
+<rect x="45" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="41.0" fill="#123">addi x1, x0, 5</text>
+<rect x="45" y="54" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="71.0" fill="#123"></text>
+<rect x="45" y="84" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="101.0" fill="#123"></text>
+<rect x="45" y="114" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="131.0" fill="#123"></text>
+<rect x="45" y="144" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="161.0" fill="#123"></text>
+<text x="221.0" y="14" text-anchor="middle" fill="#666">cycle 1</text>
+<rect x="163" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="41.0" fill="#123">addi x2, x1, 1</text>
+<rect x="163" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="71.0" fill="#123">addi x1, x0, 5</text>
+<rect x="163" y="84" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="168" y="101.0" fill="#123"></text>
+<rect x="163" y="114" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="168" y="131.0" fill="#123"></text>
+<rect x="163" y="144" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="168" y="161.0" fill="#123"></text>
+<text x="339.0" y="14" text-anchor="middle" fill="#666">cycle 2</text>
+<rect x="281" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="41.0" fill="#123">add x3, x2, x1</text>
+<rect x="281" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="71.0" fill="#123">addi x2, x1, 1</text>
+<rect x="281" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="101.0" fill="#123">addi x1, x0, 5</text>
+<rect x="281" y="114" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="286" y="131.0" fill="#123"></text>
+<rect x="281" y="144" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="286" y="161.0" fill="#123"></text>
+<text x="457.0" y="14" text-anchor="middle" fill="#666">cycle 3</text>
+<rect x="399" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="41.0" fill="#123">sw x3, 0x40(x0)</text>
+<rect x="399" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="71.0" fill="#123">add x3, x2, x1</text>
+<rect x="399" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="101.0" fill="#123">addi x2, x1, 1</text>
+<rect x="399" y="114" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="131.0" fill="#123">addi x1, x0, 5</text>
+<rect x="399" y="144" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="404" y="161.0" fill="#123"></text>
+<rect x="478" y="83" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="486.5" y="92" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="575.0" y="14" text-anchor="middle" fill="#666">cycle 4</text>
+<rect x="517" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="41.0" fill="#123">lw x4, 0x40(x0)</text>
+<rect x="517" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="71.0" fill="#123">sw x3, 0x40(x0)</text>
+<rect x="517" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="101.0" fill="#123">add x3, x2, x1</text>
+<rect x="517" y="114" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="131.0" fill="#123">addi x2, x1, 1</text>
+<rect x="517" y="144" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="161.0" fill="#123">addi x1, x0, 5</text>
+<rect x="596" y="83" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="604.5" y="92" text-anchor="middle" fill="white" font-size="9">AM</text>
+<rect x="614" y="83" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="622.5" y="92" text-anchor="middle" fill="white" font-size="9">BW</text>
+<text x="693.0" y="14" text-anchor="middle" fill="#666">cycle 5</text>
+<rect x="635" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="41.0" fill="#123">add x5, x4, x1</text>
+<rect x="635" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="71.0" fill="#123">lw x4, 0x40(x0)</text>
+<rect x="635" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="101.0" fill="#123">sw x3, 0x40(x0)</text>
+<rect x="635" y="114" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="131.0" fill="#123">add x3, x2, x1</text>
+<rect x="635" y="144" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="161.0" fill="#123">addi x2, x1, 1</text>
+<rect x="732" y="83" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="740.5" y="92" text-anchor="middle" fill="white" font-size="9">BM</text>
+<text x="811.0" y="14" text-anchor="middle" fill="#666">cycle 6</text>
+<rect x="753" y="24" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="758" y="41.0" fill="#123">addi x6, x0, 3</text>
+<rect x="753" y="54" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="758" y="71.0" fill="#123">add x5, x4, x1</text>
+<rect x="753" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="101.0" fill="#123">lw x4, 0x40(x0)</text>
+<rect x="753" y="114" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="131.0" fill="#123">sw x3, 0x40(x0)</text>
+<rect x="753" y="144" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="161.0" fill="#123">add x3, x2, x1</text>
+<text x="811.0" y="186" text-anchor="middle" fill="#b02020" font-size="9.5">load-use stall</text>
+<text x="929.0" y="14" text-anchor="middle" fill="#666">cycle 7</text>
+<rect x="871" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="41.0" fill="#123">addi x6, x0, 3</text>
+<rect x="871" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="71.0" fill="#123">add x5, x4, x1</text>
+<rect x="871" y="84" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="876" y="101.0" fill="#123"></text>
+<rect x="871" y="114" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="131.0" fill="#123">lw x4, 0x40(x0)</text>
+<rect x="871" y="144" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="161.0" fill="#123">sw x3, 0x40(x0)</text>
+<text x="1047.0" y="14" text-anchor="middle" fill="#666">cycle 8</text>
+<rect x="989" y="24" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="41.0" fill="#123">div x7, x5, x6</text>
+<rect x="989" y="54" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="71.0" fill="#123">addi x6, x0, 3</text>
+<rect x="989" y="84" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="101.0" fill="#123">add x5, x4, x1</text>
+<rect x="989" y="114" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="994" y="131.0" fill="#123"></text>
+<rect x="989" y="144" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="161.0" fill="#123">lw x4, 0x40(x0)</text>
+<rect x="1068" y="83" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="1076.5" y="92" text-anchor="middle" fill="white" font-size="9">AW</text>
+<text x="6" y="245" font-weight="bold" fill="#234">IF</text>
+<text x="6" y="275" font-weight="bold" fill="#234">ID</text>
+<text x="6" y="305" font-weight="bold" fill="#234">EX</text>
+<text x="6" y="335" font-weight="bold" fill="#234">MEM</text>
+<text x="6" y="365" font-weight="bold" fill="#234">WB</text>
+<text x="103.0" y="218" text-anchor="middle" fill="#666">cycle 9</text>
+<rect x="45" y="228" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="245.0" fill="#123">addi x8, x7, 1</text>
+<rect x="45" y="258" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="275.0" fill="#123">div x7, x5, x6</text>
+<rect x="45" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="305.0" fill="#123">addi x6, x0, 3</text>
+<rect x="45" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="335.0" fill="#123">add x5, x4, x1</text>
+<rect x="45" y="348" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="365.0" fill="#123"></text>
+<text x="221.0" y="218" text-anchor="middle" fill="#666">cycle 10</text>
+<rect x="163" y="228" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="168" y="245.0" fill="#123">addi x9, x0, 0</text>
+<rect x="163" y="258" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="168" y="275.0" fill="#123">addi x8, x7, 1</text>
+<rect x="163" y="288" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="168" y="305.0" fill="#123">div x7, x5, x6</text>
+<rect x="163" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="335.0" fill="#123">addi x6, x0, 3</text>
+<rect x="163" y="348" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="365.0" fill="#123">add x5, x4, x1</text>
+<rect x="242" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="250.5" y="296" text-anchor="middle" fill="white" font-size="9">AW</text>
+<rect x="260" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="268.5" y="296" text-anchor="middle" fill="white" font-size="9">BM</text>
+<text x="221.0" y="390" text-anchor="middle" fill="#b02020" font-size="9.5">divider busy</text>
+<text x="339.0" y="218" text-anchor="middle" fill="#666">cycle 11</text>
+<rect x="281" y="228" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="286" y="245.0" fill="#123">addi x9, x0, 0</text>
+<rect x="281" y="258" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="286" y="275.0" fill="#123">addi x8, x7, 1</text>
+<rect x="281" y="288" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="286" y="305.0" fill="#123">div x7, x5, x6</text>
+<rect x="281" y="318" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="286" y="335.0" fill="#123"></text>
+<rect x="281" y="348" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="365.0" fill="#123">addi x6, x0, 3</text>
+<rect x="378" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="386.5" y="296" text-anchor="middle" fill="white" font-size="9">BW</text>
+<text x="339.0" y="390" text-anchor="middle" fill="#b02020" font-size="9.5">divider busy</text>
+<text x="457.0" y="218" text-anchor="middle" fill="#666">cycles 12-42  (x31)</text>
+<rect x="399" y="228" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="404" y="245.0" fill="#123">addi x9, x0, 0</text>
+<rect x="399" y="258" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="404" y="275.0" fill="#123">addi x8, x7, 1</text>
+<rect x="399" y="288" width="116" height="26" rx="3" fill="#ffe2b0" stroke="#b8c4d4"/>
+<text x="404" y="305.0" fill="#123">div x7, x5, x6</text>
+<rect x="399" y="318" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="404" y="335.0" fill="#123"></text>
+<rect x="399" y="348" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="404" y="365.0" fill="#123"></text>
+<text x="457.0" y="390" text-anchor="middle" fill="#b02020" font-size="9.5">divider busy</text>
+<text x="575.0" y="218" text-anchor="middle" fill="#666">cycle 43</text>
+<rect x="517" y="228" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="245.0" fill="#123">addi x9, x0, 0</text>
+<rect x="517" y="258" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="275.0" fill="#123">addi x8, x7, 1</text>
+<rect x="517" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="305.0" fill="#123">div x7, x5, x6</text>
+<rect x="517" y="318" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="522" y="335.0" fill="#123"></text>
+<rect x="517" y="348" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="522" y="365.0" fill="#123"></text>
+<text x="693.0" y="218" text-anchor="middle" fill="#666">cycle 44</text>
+<rect x="635" y="228" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="245.0" fill="#123">addi x9, x9, 1</text>
+<rect x="635" y="258" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="275.0" fill="#123">addi x9, x0, 0</text>
+<rect x="635" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="305.0" fill="#123">addi x8, x7, 1</text>
+<rect x="635" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="335.0" fill="#123">div x7, x5, x6</text>
+<rect x="635" y="348" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="640" y="365.0" fill="#123"></text>
+<rect x="714" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="722.5" y="296" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="811.0" y="218" text-anchor="middle" fill="#666">cycle 45</text>
+<rect x="753" y="228" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="245.0" fill="#123">blt x9, x6, loop</text>
+<rect x="753" y="258" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="275.0" fill="#123">addi x9, x9, 1</text>
+<rect x="753" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="305.0" fill="#123">addi x9, x0, 0</text>
+<rect x="753" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="335.0" fill="#123">addi x8, x7, 1</text>
+<rect x="753" y="348" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="365.0" fill="#123">div x7, x5, x6</text>
+<text x="929.0" y="218" text-anchor="middle" fill="#666">cycle 46</text>
+<rect x="871" y="228" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="245.0" fill="#123">addi x10, x9, 0</text>
+<rect x="871" y="258" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="275.0" fill="#123">blt x9, x6, loop</text>
+<rect x="871" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="305.0" fill="#123">addi x9, x9, 1</text>
+<rect x="871" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="335.0" fill="#123">addi x9, x0, 0</text>
+<rect x="871" y="348" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="365.0" fill="#123">addi x8, x7, 1</text>
+<rect x="950" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="958.5" y="296" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="1047.0" y="218" text-anchor="middle" fill="#666">cycle 47</text>
+<rect x="989" y="228" width="116" height="26" rx="3" fill="#ffbcbc" stroke="#b8c4d4"/>
+<text x="994" y="245.0" fill="#123">lui x31, 0x10000</text>
+<rect x="989" y="258" width="116" height="26" rx="3" fill="#ffbcbc" stroke="#b8c4d4"/>
+<text x="994" y="275.0" fill="#123">addi x10, x9, 0</text>
+<rect x="989" y="288" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="305.0" fill="#123">blt x9, x6, loop</text>
+<rect x="989" y="318" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="335.0" fill="#123">addi x9, x9, 1</text>
+<rect x="989" y="348" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="365.0" fill="#123">addi x9, x0, 0</text>
+<rect x="1068" y="287" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="1076.5" y="296" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="1047.0" y="390" text-anchor="middle" fill="#b02020" font-size="9.5">mispredict: flush</text>
+<text x="6" y="449" font-weight="bold" fill="#234">IF</text>
+<text x="6" y="479" font-weight="bold" fill="#234">ID</text>
+<text x="6" y="509" font-weight="bold" fill="#234">EX</text>
+<text x="6" y="539" font-weight="bold" fill="#234">MEM</text>
+<text x="6" y="569" font-weight="bold" fill="#234">WB</text>
+<text x="103.0" y="422" text-anchor="middle" fill="#666">cycle 48</text>
+<rect x="45" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="449.0" fill="#123">addi x9, x9, 1</text>
+<rect x="45" y="462" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="479.0" fill="#123"></text>
+<rect x="45" y="492" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="509.0" fill="#123"></text>
+<rect x="45" y="522" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="539.0" fill="#123">blt x9, x6, loop</text>
+<rect x="45" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="569.0" fill="#123">addi x9, x9, 1</text>
+<text x="221.0" y="422" text-anchor="middle" fill="#666">cycle 49</text>
+<rect x="163" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="449.0" fill="#123">blt x9, x6, loop</text>
+<rect x="163" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="479.0" fill="#123">addi x9, x9, 1</text>
+<rect x="163" y="492" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="168" y="509.0" fill="#123"></text>
+<rect x="163" y="522" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="168" y="539.0" fill="#123"></text>
+<rect x="163" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="569.0" fill="#123">blt x9, x6, loop</text>
+<text x="339.0" y="422" text-anchor="middle" fill="#666">cycle 50</text>
+<rect x="281" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="449.0" fill="#123">addi x9, x9, 1</text>
+<rect x="281" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="479.0" fill="#123">blt x9, x6, loop</text>
+<rect x="281" y="492" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="509.0" fill="#123">addi x9, x9, 1</text>
+<rect x="281" y="522" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="286" y="539.0" fill="#123"></text>
+<rect x="281" y="552" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="286" y="569.0" fill="#123"></text>
+<text x="457.0" y="422" text-anchor="middle" fill="#666">cycle 51</text>
+<rect x="399" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="449.0" fill="#123">blt x9, x6, loop</text>
+<rect x="399" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="479.0" fill="#123">addi x9, x9, 1</text>
+<rect x="399" y="492" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="509.0" fill="#123">blt x9, x6, loop</text>
+<rect x="399" y="522" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="404" y="539.0" fill="#123">addi x9, x9, 1</text>
+<rect x="399" y="552" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="404" y="569.0" fill="#123"></text>
+<rect x="478" y="491" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="486.5" y="500" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="575.0" y="422" text-anchor="middle" fill="#666">cycle 52</text>
+<rect x="517" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="449.0" fill="#123">addi x9, x9, 1</text>
+<rect x="517" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="479.0" fill="#123">blt x9, x6, loop</text>
+<rect x="517" y="492" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="509.0" fill="#123">addi x9, x9, 1</text>
+<rect x="517" y="522" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="539.0" fill="#123">blt x9, x6, loop</text>
+<rect x="517" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="522" y="569.0" fill="#123">addi x9, x9, 1</text>
+<rect x="596" y="491" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="604.5" y="500" text-anchor="middle" fill="white" font-size="9">AW</text>
+<text x="693.0" y="422" text-anchor="middle" fill="#666">cycle 53</text>
+<rect x="635" y="432" width="116" height="26" rx="3" fill="#ffbcbc" stroke="#b8c4d4"/>
+<text x="640" y="449.0" fill="#123">blt x9, x6, loop</text>
+<rect x="635" y="462" width="116" height="26" rx="3" fill="#ffbcbc" stroke="#b8c4d4"/>
+<text x="640" y="479.0" fill="#123">addi x9, x9, 1</text>
+<rect x="635" y="492" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="509.0" fill="#123">blt x9, x6, loop</text>
+<rect x="635" y="522" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="539.0" fill="#123">addi x9, x9, 1</text>
+<rect x="635" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="640" y="569.0" fill="#123">blt x9, x6, loop</text>
+<rect x="714" y="491" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="722.5" y="500" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="693.0" y="594" text-anchor="middle" fill="#b02020" font-size="9.5">mispredict: flush</text>
+<text x="811.0" y="422" text-anchor="middle" fill="#666">cycle 54</text>
+<rect x="753" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="449.0" fill="#123">addi x10, x9, 0</text>
+<rect x="753" y="462" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="758" y="479.0" fill="#123"></text>
+<rect x="753" y="492" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="758" y="509.0" fill="#123"></text>
+<rect x="753" y="522" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="539.0" fill="#123">blt x9, x6, loop</text>
+<rect x="753" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="758" y="569.0" fill="#123">addi x9, x9, 1</text>
+<text x="929.0" y="422" text-anchor="middle" fill="#666">cycle 55</text>
+<rect x="871" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="449.0" fill="#123">lui x31, 0x10000</text>
+<rect x="871" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="479.0" fill="#123">addi x10, x9, 0</text>
+<rect x="871" y="492" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="876" y="509.0" fill="#123"></text>
+<rect x="871" y="522" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="876" y="539.0" fill="#123"></text>
+<rect x="871" y="552" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="876" y="569.0" fill="#123">blt x9, x6, loop</text>
+<text x="1047.0" y="422" text-anchor="middle" fill="#666">cycle 56</text>
+<rect x="989" y="432" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="449.0" fill="#123">sw x0, 0(x31)</text>
+<rect x="989" y="462" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="479.0" fill="#123">lui x31, 0x10000</text>
+<rect x="989" y="492" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="994" y="509.0" fill="#123">addi x10, x9, 0</text>
+<rect x="989" y="522" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="994" y="539.0" fill="#123"></text>
+<rect x="989" y="552" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="994" y="569.0" fill="#123"></text>
+<text x="6" y="653" font-weight="bold" fill="#234">IF</text>
+<text x="6" y="683" font-weight="bold" fill="#234">ID</text>
+<text x="6" y="713" font-weight="bold" fill="#234">EX</text>
+<text x="6" y="743" font-weight="bold" fill="#234">MEM</text>
+<text x="6" y="773" font-weight="bold" fill="#234">WB</text>
+<text x="103.0" y="626" text-anchor="middle" fill="#666">cycle 57</text>
+<rect x="45" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="653.0" fill="#123">nop</text>
+<rect x="45" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="683.0" fill="#123">sw x0, 0(x31)</text>
+<rect x="45" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="713.0" fill="#123">lui x31, 0x10000</text>
+<rect x="45" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="50" y="743.0" fill="#123">addi x10, x9, 0</text>
+<rect x="45" y="756" width="116" height="26" rx="3" fill="#fafafa" stroke="#b8c4d4"/>
+<text x="50" y="773.0" fill="#123"></text>
+<text x="221.0" y="626" text-anchor="middle" fill="#666">cycle 58</text>
+<rect x="163" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="653.0" fill="#123">nop</text>
+<rect x="163" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="683.0" fill="#123">nop</text>
+<rect x="163" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="713.0" fill="#123">sw x0, 0(x31)</text>
+<rect x="163" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="743.0" fill="#123">lui x31, 0x10000</text>
+<rect x="163" y="756" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="168" y="773.0" fill="#123">addi x10, x9, 0</text>
+<rect x="242" y="695" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="250.5" y="704" text-anchor="middle" fill="white" font-size="9">AM</text>
+<text x="339.0" y="626" text-anchor="middle" fill="#666">cycle 59</text>
+<rect x="281" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="653.0" fill="#123">nop</text>
+<rect x="281" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="683.0" fill="#123">nop</text>
+<rect x="281" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="713.0" fill="#123">nop</text>
+<rect x="281" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="743.0" fill="#123">sw x0, 0(x31)</text>
+<rect x="281" y="756" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4"/>
+<text x="286" y="773.0" fill="#123">lui x31, 0x10000</text>
+<text x="44" y="832" fill="#555" font-size="10">orange = held by stall, red = squashed by flush, blue AM/AW/BM/BW = operand A/B forwarded from EX/MEM (M) or MEM/WB (W)</text>
+</svg>
