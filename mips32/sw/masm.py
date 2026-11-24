@@ -14,10 +14,13 @@ SHI = {'sll':0,'srl':2,'sra':3}
 SHV = {'sllv':4,'srlv':6,'srav':7}
 MD  = {'mult':0x18,'multu':0x19,'div':0x1A,'divu':0x1B}
 IOP = {'addi':8,'addiu':9,'slti':0xA,'sltiu':0xB,'andi':0xC,'ori':0xD,'xori':0xE}
-MEM = {'lb':0x20,'lh':0x21,'lw':0x23,'lbu':0x24,'lhu':0x25,'sb':0x28,'sh':0x29,'sw':0x2B}
+MEM = {'lb':0x20,'lh':0x21,'lw':0x23,'lbu':0x24,'lhu':0x25,'sb':0x28,'sh':0x29,'sw':0x2B,
+       'lwl':0x22,'lwr':0x26,'swl':0x2A,'swr':0x2E}
 BR2 = {'beq':4,'bne':5}
-BR1 = {'blez':6,'bgtz':7}
-RGM = {'bltz':0,'bgez':1,'bltzal':0x10,'bgezal':0x11}
+BR1 = {'blez':6,'bgtz':7,'blezl':0x16,'bgtzl':0x17}
+BR2L = {'beql':0x14,'bnel':0x15}
+RGM = {'bltz':0,'bgez':1,'bltzl':2,'bgezl':3,'bltzal':0x10,'bgezal':0x11,'bltzall':0x12,'bgezall':0x13}
+CP0N = {'badvaddr':8,'count':9,'compare':11,'status':12,'cause':13,'epc':14}
 LISTING = []
 
 def reg(s):
@@ -47,7 +50,8 @@ def expand(mn, a):
     if mn == 'bge':   return [('slt', ['$at',a[0],a[1]]), ('beq', ['$at','$zero',a[2]])]
     if mn == 'bgt':   return [('slt', ['$at',a[1],a[0]]), ('bne', ['$at','$zero',a[2]])]
     if mn == 'ble':   return [('slt', ['$at',a[1],a[0]]), ('beq', ['$at','$zero',a[2]])]
-    if mn == 'halt':  return [('addu', ['$a0','$zero','$zero']), ('syscall', [])]
+    if mn == 'exit':  return [('lui', ['$at', '0xFFFF']), ('sw', ['$a0', '0($at)'])]          # store $a0 to HALT
+    if mn == 'halt':  return [('addu', ['$a0','$zero','$zero'])] + expand('exit', [])
     if mn == 'la':    return [('lui', [a[0], '%hi:'+a[1]]), ('ori', [a[0], a[0], '%lo:'+a[1]])]
     if mn == 'li':
         v = num(a[1]) & 0xffffffff; sv = v - (1<<32) if v & 0x80000000 else v
@@ -70,6 +74,10 @@ def assemble(text):
         if not line: continue
         parts = line.split(None, 1)
         mn, args = parts[0].lower(), (parts[1] if len(parts) > 1 else '')
+        if mn == '.org':
+            target_addr = num(args)
+            while len(items) * 4 < target_addr: items.append(('sll', ['$zero','$zero','0'], ln))
+            continue
         for e in expand(mn, split(args)): items.append((e[0], e[1], ln))
     LISTING = [f'{mn} {", ".join(a)}'.strip() for mn, a, ln in items]
     words = []
@@ -95,6 +103,12 @@ def assemble(text):
                 rd, rs = (31, reg(a[0])) if len(a) == 1 else (reg(a[0]), reg(a[1]))
                 w = r_(0, rs, 0, rd, 0, 9)
             elif mn == 'syscall': w = 0x0c
+            elif mn == 'break':   w = 0x0d
+            elif mn == 'eret':    w = 0x42000018
+            elif mn in ('mfc0', 'mtc0'):
+                c = a[1].strip().lstrip('$').lower(); cp = CP0N[c] if c in CP0N else num(c)
+                w = (0x10 << 26) | ((0 if mn == 'mfc0' else 4) << 21) | (reg(a[0]) << 16) | (cp << 11)
+            elif mn in BR2L: w = i_(BR2L[mn], reg(a[0]), reg(a[1]), boff(a[2]))
             elif mn in IOP:
                 imm = num(a[2]) if not a[2].startswith('%') else 0
                 w = i_(IOP[mn], reg(a[1]), reg(a[0]), imm) if not a[2].startswith('%lo:') else \
