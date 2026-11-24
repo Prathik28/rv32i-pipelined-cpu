@@ -30,10 +30,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Icarus Verilog
-        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Install Icarus Verilog and Yosys
+        run: sudo apt-get update && sudo apt-get install -y iverilog yosys
       - name: Run MIPS test-suite (RTL vs golden ISS)
         run: make -C mips32 test
+      - name: MIPS synthesis check (Xilinx 7-series, Yosys)
+        run: make -C mips32 synth
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mips-synthesis-report
+          path: mips32/build/synth_stat.txt
+
+  # Place & route of the MIPS core for a Lattice ECP5 (open-source toolchain, informational only).
+  mips-timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OSS CAD Suite (pinned release, direct download)
+        run: |
+          curl -fsSL --retry 5 --retry-delay 10 -o "$RUNNER_TEMP/oss-cad.tgz" \
+            https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-11-23/oss-cad-suite-linux-x64-20261123.tgz
+          tar -xzf "$RUNNER_TEMP/oss-cad.tgz" -C "$HOME"
+          echo "$HOME/oss-cad-suite/bin" >> "$GITHUB_PATH"
+      - name: Place and route (ECP5, nextpnr)
+        shell: bash
+        run: |
+          mkdir -p mips32/build
+          mips32/sw/ecp5_timing.sh | tee mips32/build/ecp5_summary.txt
+      - name: Job summary
+        if: always()
+        run: |
+          { echo '### MIPS core: ECP5 place-and-route estimate (nextpnr, LFE5U-85F, speed grade 6)';
+            echo '```'; cat mips32/build/ecp5_summary.txt 2>/dev/null || echo "no result"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mips-ecp5-timing
+          path: mips32/build/ecp5_*
 
   # Place & route for a Lattice ECP5 with the open-source toolchain: gives an Fmax *estimate*
   # without any local install or board. Informational only (does not gate publishing).

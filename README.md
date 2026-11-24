@@ -8,7 +8,7 @@ levels, memory protection, precise exceptions, three interrupt sources, memory w
 hardware-handled misaligned accesses. (RISC-V rather than MIPS, but the pipeline is the classic
 MIPS-style one.)
 
-> **Also in this repository:** a separate **MIPS32** pipelined core with the classic branch delay slot in [`mips32/`](mips32/README.md).
+> **Also in this repository:** a separate **MIPS32** pipelined core (branch delay slot, branch-likely, CP0 exceptions and interrupts, unaligned loads/stores) in [`mips32/`](mips32/README.md).
 
 * **ISA:** RV32I + **M** + **A** + **Zicsr** + **Zifencei**, M-mode and U-mode, 4-entry **PMP**; no compressed instructions
 * **Verified** against an independent Python golden model (registers, memory, exit code, console)

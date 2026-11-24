@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Assemble each test, run it on the golden ISS and on the RTL (iverilog), compare registers,
-HI/LO, data memory, exit code and console output. Usage: run_tests.py [N_RANDOM]"""
+HI/LO, data memory, exit code and console output. tests/sc_*.s are self-checking (timing-dependent, e.g. timer interrupts): the RTL exit code must be 0.
+Usage: run_tests.py [N_RANDOM]"""
 import glob, os, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
 import masm, mips_iss, gen_random
@@ -19,16 +20,17 @@ def run_rtl(hexfile, extra=()):
     stdout = '\n'.join(l for l in p.stdout.split('\n') if not l.startswith('WARNING'))
     head, sep, tail = stdout.partition('\n----\n')
     if 'DONE' not in tail: return None
-    regs = [0]*32; mem = {}; perf = None; exit_code = None; hi = lo = 0
+    regs = [0]*32; mem = {}; perf = None; exit_code = None; hi = lo = 0; cp0 = (0, 0, 0)
     for l in tail.splitlines():
         t = l.split()
         if   t[:1] == ['REG']:  regs[int(t[1])] = int(t[2], 16)
         elif t[:1] == ['HI']:   hi = int(t[1], 16)
         elif t[:1] == ['LO']:   lo = int(t[1], 16)
+        elif t[:1] == ['CP0']:  cp0 = tuple(int(x, 16) for x in t[1:4])
         elif t[:1] == ['MEM']:  mem[int(t[1])] = int(t[2], 16)
         elif t[:1] == ['EXIT']: exit_code = int(t[1])
         elif t[:1] == ['PERF']: perf = list(map(int, t[1:]))
-    return regs, hi, lo, mem, perf, exit_code, head.rstrip('\n')
+    return regs, hi, lo, mem, perf, exit_code, head.rstrip('\n'), cp0
 
 def perf_limits(text):
     lim = {}
@@ -38,13 +40,14 @@ def perf_limits(text):
                 k, v = tok.split('<='); lim[k] = int(v)
     return lim
 
-def check(name, text):
+def check(name, text, selfcheck=False):
     words = masm.assemble(text)
     hexf = os.path.join(BUILD, name + '.hex')
     open(hexf, 'w').write(''.join(f'{w:08x}\n' for w in words))
     res = run_rtl(hexf)
     if res is None: return False, 'RTL timeout / no DONE', None
-    rregs, rhi, rlo, rmem, perf, rexit, rout = res
+    rregs, rhi, rlo, rmem, perf, rexit, rout, rcp0 = res
+    if selfcheck: return rexit == 0, f'exit code {rexit}', perf
     g = mips_iss.run(words)
     gmem = {i: int.from_bytes(g.mem[i:i+4], 'little') for i in range(0, 4096, 4)}
     gmem = {k: v for k, v in gmem.items() if v}
@@ -53,6 +56,7 @@ def check(name, text):
     if rlo != g.lo: errs.append(f'LO rtl={rlo:08x} iss={g.lo:08x}')
     for a in sorted(set(rmem) | set(gmem)):
         if rmem.get(a, 0) != gmem.get(a, 0): errs.append(f'mem[{a:#x}]: rtl={rmem.get(a,0):08x} iss={gmem.get(a,0):08x}')
+    if rcp0 != (g.epc, g.badv, g.cause): errs.append(f'CP0 (epc,badvaddr,cause) rtl={tuple(hex(x) for x in rcp0)} iss={(hex(g.epc), hex(g.badv), hex(g.cause))}')
     if rexit != g.exit_code: errs.append(f'exit rtl={rexit} iss={g.exit_code}')
     if rout.rstrip('\n') != g.out.rstrip('\n'): errs.append(f'console rtl={rout!r} iss={g.out!r}')
     if perf:
@@ -64,11 +68,11 @@ def check(name, text):
 def main():
     nrand = int(sys.argv[1]) if len(sys.argv) > 1 else 200
     build_rtl(); fails = 0
-    print(f'{"test":<22}{"result":<7}{"cycles":>7}{"instret":>8}{"CPI":>6}{"ld-use":>7}{"br-stall":>9}{"div":>5}{"taken":>7}')
+    print(f'{"test":<22}{"result":<7}{"cycles":>7}{"instret":>8}{"CPI":>6}{"ld-use":>7}{"br-stall":>9}{"div":>5}{"taken":>7}{"traps":>6}')
     for f in sorted(glob.glob(f'{ROOT}/tests/*.s')):
         name = os.path.basename(f)[:-2]
-        ok, msg, p = check(name, open(f).read())
-        if p: print(f'{name:<22}{"PASS" if ok else "FAIL":<7}{p[0]:>7}{p[1]:>8}{p[0]/max(p[1],1):>6.2f}{p[2]:>7}{p[3]:>9}{p[4]:>5}{p[5]:>7}')
+        ok, msg, p = check(name, open(f).read(), selfcheck=name.startswith('sc_'))
+        if p: print(f'{name:<22}{"PASS" if ok else "FAIL":<7}{p[0]:>7}{p[1]:>8}{p[0]/max(p[1],1):>6.2f}{p[2]:>7}{p[3]:>9}{p[4]:>5}{p[5]:>7}{p[6]:>6}')
         else: print(f'{name:<22}FAIL')
         if not ok:
             fails += 1; print('   ', msg)

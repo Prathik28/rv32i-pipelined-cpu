@@ -337,7 +337,7 @@
 <text x="6" y="773" font-weight="bold" fill="#234">WB</text>
 <text x="103.0" y="626" text-anchor="middle" fill="#666">cycle 57</text>
 <rect x="45" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="50" y="653.0" fill="#123">syscall</text>
+<text x="50" y="653.0" fill="#123">lui $at, 0xFFFF</text>
 <rect x="45" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="50" y="683.0" fill="#123">addu $a0, $zero, $</text>
 <rect x="45" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
@@ -348,9 +348,9 @@
 <text x="50" y="773.0" fill="#123"></text>
 <text x="221.0" y="626" text-anchor="middle" fill="#666">cycle 58</text>
 <rect x="163" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="168" y="653.0" fill="#123">nop</text>
+<text x="168" y="653.0" fill="#123">sw $a0, 0($at)</text>
 <rect x="163" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="168" y="683.0" fill="#123">syscall</text>
+<text x="168" y="683.0" fill="#123">lui $at, 0xFFFF</text>
 <rect x="163" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="168" y="713.0" fill="#123">addu $a0, $zero, $</text>
 <rect x="163" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
@@ -361,24 +361,36 @@
 <rect x="281" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="286" y="653.0" fill="#123">nop</text>
 <rect x="281" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="286" y="683.0" fill="#123">nop</text>
+<text x="286" y="683.0" fill="#123">sw $a0, 0($at)</text>
 <rect x="281" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="286" y="713.0" fill="#123">syscall</text>
+<text x="286" y="713.0" fill="#123">lui $at, 0xFFFF</text>
 <rect x="281" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="286" y="743.0" fill="#123">addu $a0, $zero, $</text>
 <rect x="281" y="756" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="286" y="773.0" fill="#123">addiu $t6, $t6, 1</text>
-<rect x="360" y="695" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="368.5" y="704" text-anchor="middle" fill="white" font-size="9">AM</text>
 <text x="457.0" y="626" text-anchor="middle" fill="#666">cycle 60</text>
 <rect x="399" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="404" y="653.0" fill="#123">nop</text>
 <rect x="399" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="404" y="683.0" fill="#123">nop</text>
 <rect x="399" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="404" y="713.0" fill="#123">nop</text>
+<text x="404" y="713.0" fill="#123">sw $a0, 0($at)</text>
 <rect x="399" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
-<text x="404" y="743.0" fill="#123">syscall</text>
+<text x="404" y="743.0" fill="#123">lui $at, 0xFFFF</text>
 <rect x="399" y="756" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
 <text x="404" y="773.0" fill="#123">addu $a0, $zero, $</text>
+<rect x="478" y="695" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="486.5" y="704" text-anchor="middle" fill="white" font-size="9">AM</text>
+<rect x="496" y="695" width="17" height="11" rx="2" fill="#2f6fd0"/><text x="504.5" y="704" text-anchor="middle" fill="white" font-size="9">BW</text>
+<text x="575.0" y="626" text-anchor="middle" fill="#666">cycle 61</text>
+<rect x="517" y="636" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
+<text x="522" y="653.0" fill="#123">nop</text>
+<rect x="517" y="666" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
+<text x="522" y="683.0" fill="#123">nop</text>
+<rect x="517" y="696" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
+<text x="522" y="713.0" fill="#123">nop</text>
+<rect x="517" y="726" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
+<text x="522" y="743.0" fill="#123">sw $a0, 0($at)</text>
+<rect x="517" y="756" width="116" height="26" rx="3" fill="#eef3fa" stroke="#b8c4d4" stroke-width="1"/>
+<text x="522" y="773.0" fill="#123">lui $at, 0xFFFF</text>
 <text x="44" y="832" fill="#555" font-size="10">orange = held by stall, green outline = taken branch/jump, blue AM/AW/BM/BW = operand A/B forwarded from EX/MEM (M) or MEM/WB (W)</text>
 </svg>
