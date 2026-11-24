@@ -25,6 +25,16 @@ jobs:
           name: synthesis-report
           path: build/synth_stat.txt
 
+  # The separate MIPS32 core (mips32/): tests against its own golden model.
+  mips:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+      - name: Run MIPS test-suite (RTL vs golden ISS)
+        run: make -C mips32 test
+
   # Place & route for a Lattice ECP5 with the open-source toolchain: gives an Fmax *estimate*
   # without any local install or board. Informational only (does not gate publishing).
   timing:
@@ -54,7 +64,7 @@ jobs:
           path: build/ecp5_*
 
   publish:
-    needs: test
+    needs: [test, mips]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
