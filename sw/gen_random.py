@@ -11,7 +11,8 @@ def gen(seed, n=200):
     def R(): return 'x0' if r.random() < 0.04 else f'x{r.choice(pool)}'
     def Rd(): return f'x{r.choice(pool)}'
     specials = [0x80000000, 0xFFFFFFFF, 0, 1, 2, 0x7FFFFFFF]
-    out = ['la x30, handler', 'csrw mtvec, x30', 'li x29, 0']
+    out = ['la x30, handler', 'csrw mtvec, x30', 'li x29, 0',
+           'li x21, 0x10000000', f'li x22, {r.choice([0, 0, 1, 2, 3, 5])}', 'sw x22, 20(x21)']   # slow-RAM wait states
     for i in pool:
         v = r.choice(specials) if r.random() < 0.3 else r.randint(0, 2**32-1)
         out.append(f'li x{i}, {v}')
@@ -45,6 +46,42 @@ def gen(seed, n=200):
         if r.random() < 0.6: l.append(f'add {Rd()}, {R()}, {R()}')   # load-use
         return l
 
+    def region_op():
+        """memory access through base register x12 into RAM / slow RAM / instruction RAM / MMIO / nowhere"""
+        k = r.random()
+        if   k < 0.50: base, span = 0x00000100, 0xE0          # fast RAM
+        elif k < 0.80: base, span = 0x20000100, 0xE0          # slow RAM (wait states)
+        elif k < 0.88: base, span = 0x30000000, 0x40          # instruction RAM: read only (code must not change)
+        elif k < 0.94: base, span = 0x10000000, 0x0           # MMIO (only harmless registers)
+        else:          base, span = r.choice([0x40000000, 0x00001000, 0x50000000]), 0x40  # access faults
+        off = r.randrange(0, span + 1)
+        L = [f'li x12, {base}']
+        if base == 0x10000000:
+            off = r.choice([0x14, 0x14, 0x18, 0x1C, 0x10]) + r.choice([0, 0, 0, 2])   # sometimes misaligned -> trap
+            if r.random() < 0.5: return L + [f'lw {Rd()}, {off}(x12)']
+            return L + [f'sw {R()}, {off}(x12)'] if off in (0x10, 0x14) else L + [f'lw {Rd()}, {off}(x12)']
+        if r.random() < 0.55 or base == 0x30000000:
+            ld = r.choice(['lw','lh','lhu','lb','lbu'])
+            L.append(f'{ld} {Rd()}, {off}(x12)')
+            if r.random() < 0.5: L.append(f'add {Rd()}, {R()}, {R()}')
+        else:
+            L.append(f'{r.choice(["sw","sh","sb"])} {R()}, {off}(x12)')
+        return L
+    def atomic_op():
+        base = r.choice([0x00000100, 0x20000100, 0x20000100, 0x10000008, 0x00001000])
+        off = r.randrange(0, 0x40, 4) + (r.choice([0,0,0,0,0,1,2]) if r.random() < 0.2 else 0)   # sometimes misaligned
+        L = [f'li x12, {base + off}']
+        k = r.random()
+        if k < 0.25:
+            L += [f'lr.w {Rd()}, (x12)', f'{r.choice(["add","xor","sub"])} {Rd()}, {R()}, {R()}',
+                  f'sc.w {Rd()}, {R()}, (x12)']
+        elif k < 0.35: L += [f'sc.w {Rd()}, {R()}, (x12)']
+        else:
+            op = r.choice(['amoswap.w','amoadd.w','amoxor.w','amoand.w','amoor.w','amomin.w','amomax.w','amominu.w','amomaxu.w'])
+            L += [f'{op} {Rd()}, {R()}, (x12)']
+        if r.random() < 0.5: L.append(f'add {Rd()}, {R()}, {R()}')      # consume the result right away
+        return L
+
     def flush_pending():
         for p in pending: out.append(f'{p[0]}:')
         pending.clear()
@@ -52,7 +89,9 @@ def gen(seed, n=200):
     for _ in range(n):
         k = r.random()
         if   k < 0.40: out.append(alu_op())
-        elif k < 0.65: out.extend(mem_op())
+        elif k < 0.53: out.extend(mem_op())
+        elif k < 0.60: out.extend(region_op())
+        elif k < 0.65: out.extend(atomic_op())
         elif k < 0.70: out.append(f'{r.choice(["csrrw","csrrs","csrrc"])} {Rd()}, {r.choice(csrs[:1])}, {R()}')
         elif k < 0.72: out.append(r.choice(['ecall','ebreak','.word 0xFFFFFFFF','.word 0x00000000',
                                             f'.word {0x00100073|0x1000}', 'csrr x1, 0x7C0']))
@@ -75,7 +114,7 @@ def gen(seed, n=200):
             out.append('auipc x9, 0'); out.append('addi x9, x9, 12')
             out.append(f'jalr x10, {off}(x9)')
         else:
-            out.append('nop')
+            out.append(r.choice(['nop', 'fence.i', 'fence']))
         for p in pending: p[1] -= 1
         for p in [p for p in pending if p[1] <= 0]:
             out.append(f'{p[0]}:'); pending.remove(p)

@@ -4,6 +4,7 @@
 module div_unit (
     input         clk,
     input         rst,
+    input         en,            // 0 = freeze (pipeline held by a memory wait state)
     input         start,
     input  [31:0] a,
     input  [31:0] b,
@@ -29,9 +30,11 @@ module div_unit (
     wire [32:0] r_next = ge ? (r_sh - {1'b0, dvs}) : r_sh;
 
     always @(posedge clk) begin
-        done <= 1'b0;
+        if (en || rst) done <= 1'b0;
         if (rst) begin
             active <= 0; done <= 0; cnt <= 0; use_special <= 0;
+        end else if (!en) begin
+            ;
         end else if (start) begin
             is_rem <= op[1];
             if (by_zero) begin

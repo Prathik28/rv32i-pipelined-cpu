@@ -19,6 +19,8 @@ module control_unit (
     output reg        is_mret,
     output reg        is_ecall,
     output reg        is_ebreak,
+    output reg        is_amo,        // LR / SC / AMO*  (A extension)
+    output reg        is_fencei,
     output reg        illegal
 );
     localparam ADD=4'd0, SUB=4'd1, SLL=4'd2, SLT=4'd3, SLTU=4'd4, XOR=4'd5,
@@ -34,6 +36,7 @@ module control_unit (
         alu_src_pc = 0; alu_ctl = ADD; branch = 0; jal = 0; jalr = 0;
         uses_rs1 = 0; uses_rs2 = 0; is_mul = 0; is_div = 0; is_csr = 0;
         is_mret = 0; is_ecall = 0; is_ebreak = 0; illegal = 0;
+        is_amo = 0; is_fencei = 0;
 
         if (instr[1:0] != 2'b11) illegal = 1;   // no compressed (C) support
         else case (opcode)
@@ -87,7 +90,19 @@ module control_unit (
                               alu_src_imm = 1; if (f3 != 0) illegal = 1; end
             7'b0110111: begin reg_write = 1; alu_src_imm = 1; alu_ctl = PASSB; end // LUI
             7'b0010111: begin reg_write = 1; alu_src_imm = 1; alu_src_pc = 1; end  // AUIPC
-            7'b0001111: ;                                                          // FENCE = NOP
+            7'b0001111: is_fencei = (f3 == 3'b001);                                // FENCE = NOP, FENCE.I
+            7'b0101111: begin // A extension (word only)
+                is_amo = 1; reg_write = 1; mem_read = 1; uses_rs1 = 1; alu_src_imm = 1;
+                mem_write = (instr[31:27] != 5'b00010);               // everything but LR writes
+                uses_rs2  = (instr[31:27] != 5'b00010);
+                if (f3 != 3'b010) illegal = 1;
+                case (instr[31:27])
+                    5'b00010: if (instr[24:20] != 5'b0) illegal = 1;   // LR needs rs2 = 0
+                    5'b00011, 5'b00001, 5'b00000, 5'b00100, 5'b01100,
+                    5'b01000, 5'b10000, 5'b10100, 5'b11000, 5'b11100: ;
+                    default: illegal = 1;
+                endcase
+            end
             7'b1110011: begin // SYSTEM
                 if (f3 == 3'b000) begin
                     case (instr)
@@ -106,7 +121,7 @@ module control_unit (
         if (illegal) begin  // an illegal instruction must have no architectural side effects
             reg_write = 0; mem_read = 0; mem_write = 0; branch = 0; jal = 0; jalr = 0;
             uses_rs1 = 0; uses_rs2 = 0; is_mul = 0; is_div = 0; is_csr = 0;
-            is_mret = 0; is_ecall = 0; is_ebreak = 0;
+            is_mret = 0; is_ecall = 0; is_ebreak = 0; is_amo = 0; is_fencei = 0;
         end
     end
 endmodule
