@@ -101,7 +101,7 @@ MIPS core is faster than the RISC-V core's ≈ 27 MHz estimate on the same chip 
 its memories map to block RAM and it has no PMP/atomic/misaligned-access logic in front of the memory stage.
 
 This is a single-seed estimate for the ECP5 family against a 25 MHz target, not a result for any other
-FPGA. An example top level (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's 100 MHz clock
+FPGA. ZedBoard instructions are in [`../docs/ZEDBOARD.md`](../docs/ZEDBOARD.md) (`fpga/zedboard_top.v`, `fpga/zedboard.xdc`). An example Basys 3 top level (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's 100 MHz clock
 by 4 and shows a binary counter (`fpga/blink.s`) on the LEDs; it has been simulated but **never run on hardware**.
 
 ## How it is verified
