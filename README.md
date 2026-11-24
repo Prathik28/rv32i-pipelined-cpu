@@ -117,7 +117,7 @@ true dual-port block RAM.
 
 ### Place and route (open-source, Lattice ECP5, `sw/ecp5_timing.sh`)
 
-The CI `timing` job runs Yosys + nextpnr for an ECP5 LFE5U-25F (speed grade 6) with no local install;
+The CI `timing` job runs Yosys + nextpnr for an ECP5 LFE5U-85F (speed grade 6; the 25F is too small now that the memories live in logic cells) with no local install;
 its result is in the job summary and the `ecp5-timing` artifact of every run.
 
 _(figures for the current design are filled in after the first CI run of this version)_

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Place & route for a Lattice ECP5 (LFE5U-25F) with the open-source Yosys + nextpnr flow and
+# Place & route for a Lattice ECP5 (LFE5U-85F; the design no longer fits the 25F because the memories are built from logic cells) with the open-source Yosys + nextpnr flow and
 # report the estimated maximum clock frequency. No board needed.
 #   needs: yosys, nextpnr-ecp5  (OSS CAD Suite: https://github.com/YosysHQ/oss-cad-suite-build)
 # NOTE: this is an estimate for ECP5, not for any other FPGA family (e.g. the Basys 3's Artix-7).
@@ -13,7 +13,7 @@ yosys -q -l build/ecp5_synth.log -p "
   read_verilog -sv -DSYNTHESIS rtl/*.v fpga/timing_top.v
   synth_ecp5 -top timing_top -json build/ecp5.json
 "
-nextpnr-ecp5 --25k --package CABGA381 --speed 6 --json build/ecp5.json \
+nextpnr-ecp5 --85k --package CABGA381 --speed 6 --json build/ecp5.json \
     --freq "$FREQ" --seed 1 --lpf-allow-unconstrained \
     --report build/ecp5_report.json > build/ecp5_pnr.log 2>&1 || { tail -30 build/ecp5_pnr.log; exit 1; }
 echo "== utilisation =="

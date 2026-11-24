@@ -45,7 +45,7 @@ jobs:
       - name: Job summary
         if: always()
         run: |
-          { echo '### ECP5 place-and-route estimate (nextpnr, LFE5U-25F, speed grade 6)';
+          { echo '### ECP5 place-and-route estimate (nextpnr, LFE5U-85F, speed grade 6)';
             echo '```'; cat build/ecp5_summary.txt 2>/dev/null || echo "no result"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
