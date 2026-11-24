@@ -25,6 +25,31 @@ jobs:
           name: synthesis-report
           path: build/synth_stat.txt
 
+  # Place & route for a Lattice ECP5 with the open-source toolchain: gives an Fmax *estimate*
+  # without any local install or board. Informational only (does not gate publishing).
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: YosysHQ/setup-oss-cad-suite@v3
+        with:
+          version: '2026-11-23'
+      - name: Place and route (ECP5, nextpnr)
+        shell: bash
+        run: |
+          mkdir -p build
+          sw/ecp5_timing.sh | tee build/ecp5_summary.txt
+      - name: Job summary
+        if: always()
+        run: |
+          { echo '### ECP5 place-and-route estimate (nextpnr, LFE5U-25F, speed grade 6)';
+            echo '```'; cat build/ecp5_summary.txt 2>/dev/null || echo "no result"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ecp5-timing
+          path: build/ecp5_*
+
   publish:
     needs: test
     runs-on: ubuntu-latest
