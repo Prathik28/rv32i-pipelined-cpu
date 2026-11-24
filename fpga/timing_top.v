@@ -8,6 +8,6 @@ module timing_top (
 );
     wire [31:0] exit_code;
     riscv_soc #(.INIT_FILE("fpga/blink.hex")) u_soc (
-        .clk(clk), .rst(rst), .halt(halt), .exit_code(exit_code), .leds(led)
+        .clk(clk), .rst(rst), .ext_irq(1'b0), .halt(halt), .exit_code(exit_code), .leds(led)
     );
 endmodule

@@ -21,14 +21,15 @@ def run_rtl(hexfile, extra=()):
     stdout = '\n'.join(l for l in p.stdout.split('\n') if not l.startswith('WARNING'))
     head, sep, tail = stdout.partition('\n----\n')
     if 'DONE' not in tail: return None
-    regs = [0]*32; mem = {}; perf = None; exit_code = None
+    regs = [0]*32; mem = {}; slow = {}; perf = None; exit_code = None
     for l in tail.splitlines():
         t = l.split()
         if   t[:1] == ['REG']:  regs[int(t[1])] = int(t[2], 16)
         elif t[:1] == ['MEM']:  mem[int(t[1])] = int(t[2], 16)
+        elif t[:1] == ['SLOW']: slow[int(t[1])] = int(t[2], 16)
         elif t[:1] == ['EXIT']: exit_code = int(t[1])
         elif t[:1] == ['PERF']: perf = list(map(int, t[1:]))
-    return regs, mem, perf, exit_code, head.rstrip('\n')
+    return regs, mem, perf, exit_code, head.rstrip('\n'), slow
 
 def perf_limits(text):
     """'# PERF mispred<=N cycles<=M' lines pin performance (predictor quality) for a test."""
@@ -45,7 +46,7 @@ def check(name, text, selfcheck=False):
     open(hexf, 'w').write(''.join(f'{w:08x}\n' for w in words))
     res = run_rtl(hexf)
     if res is None: return False, 'RTL timeout / no DONE', None
-    rregs, rmem, perf, rexit, rout = res
+    rregs, rmem, perf, rexit, rout, rslow = res
     if selfcheck:
         return rexit == 0, f'exit code {rexit}', perf
     g = iss.run(words)
@@ -59,6 +60,11 @@ def check(name, text, selfcheck=False):
         for k, idx in (('cycles', 0), ('mispred', 6)):
             lim = perf_limits(text).get(k)
             if lim is not None and perf[idx] > lim: errs.append(f'perf: {k}={perf[idx]} exceeds limit {lim}')
+    gslow = {i: int.from_bytes(g.slow[i:i+4], 'little') for i in range(0, 4096, 4)}
+    gslow = {k: v for k, v in gslow.items() if v}
+    for a in sorted(set(rslow) | set(gslow)):
+        if rslow.get(a, 0) != gslow.get(a, 0):
+            errs.append(f'slow[{a:#x}]: rtl={rslow.get(a,0):08x} iss={gslow.get(a,0):08x}')
     if rexit != g.exit_code: errs.append(f'exit rtl={rexit} iss={g.exit_code}')
     if rout != g.out: errs.append(f'console rtl={rout!r} iss={g.out!r}')
     return (not errs), '; '.join(errs[:6]), perf

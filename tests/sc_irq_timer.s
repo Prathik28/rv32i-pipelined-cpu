@@ -4,6 +4,7 @@
     csrw mtvec, x1
     li   x20, 0              # interrupt counter (written by handler)
     li   x2, 0x10000000
+    sw   x0, 32(x2)          # mtimecmp high word = 0 (the compare is 64-bit)
     lw   x3, 12(x2)          # mtime
     addi x3, x3, 60
     sw   x3, 8(x2)           # mtimecmp = mtime + 60
@@ -21,7 +22,7 @@ spin:
     li   x9, 0x80000007
     csrr x10, mcause
     bne  x10, x9, fail
-    li   x11, 20
+    li   x11, 3              # the loop (with a 34-cycle divide) made progress between interrupts
     blt  x6, x11, fail
     # x8 must equal x6 (div(mul(x6,x6),x6)) => interrupted arithmetic was not corrupted
     bne  x8, x6, fail

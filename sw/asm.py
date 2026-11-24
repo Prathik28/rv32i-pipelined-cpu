@@ -13,7 +13,11 @@ R_OPS = {'add':(0,0),'sub':(0,0x20),'sll':(1,0),'slt':(2,0),'sltu':(3,0),'xor':(
          'div':(4,1),'divu':(5,1),'rem':(6,1),'remu':(7,1)}
 CSR_NAMES = {'mstatus':0x300,'misa':0x301,'mie':0x304,'mtvec':0x305,'mscratch':0x340,'mepc':0x341,
              'mcause':0x342,'mtval':0x343,'mip':0x344,'mcycle':0xB00,'minstret':0xB02,'mhartid':0xF14,
-             'cycle':0xC00,'instret':0xC02}
+             'cycle':0xC00,'time':0xC01,'instret':0xC02,'mcycleh':0xB80,'minstreth':0xB82,
+             'cycleh':0xC80,'timeh':0xC81,'instreth':0xC82,'mcounteren':0x306,
+             'pmpcfg0':0x3A0,'pmpaddr0':0x3B0,'pmpaddr1':0x3B1,'pmpaddr2':0x3B2,'pmpaddr3':0x3B3}
+AMO_F5 = {'amoadd.w':0,'amoswap.w':1,'lr.w':2,'sc.w':3,'amoxor.w':4,'amoor.w':8,'amoand.w':12,
+          'amomin.w':16,'amomax.w':20,'amominu.w':24,'amomaxu.w':28}
 CSR_OPS = {'csrrw':1,'csrrs':2,'csrrc':3,'csrrwi':5,'csrrsi':6,'csrrci':7}
 
 I_OPS = {'addi':0,'slti':2,'sltiu':3,'xori':4,'ori':6,'andi':7}
@@ -109,6 +113,11 @@ def assemble(text):
         if not line: continue
         parts = line.split(None, 1)
         mn, args = parts[0].lower(), (parts[1] if len(parts) > 1 else '')
+        aqrl = 0
+        for suf, bits in (('.aqrl', 3), ('.aq', 2), ('.rl', 1)):
+            if mn.endswith(suf) and mn[:-len(suf)] in AMO_F5: mn = mn[:-len(suf)]; aqrl = bits; break
+        if aqrl: args = args  # bits are re-attached below via marker
+        if aqrl: mn = mn + '@' + str(aqrl)
         for e in expand(mn, split(args)):
             items.append((e[0], e[1], ln))
 
@@ -148,6 +157,16 @@ def assemble(text):
                 f3 = CSR_OPS[mn]
                 src = (num(a[2]) & 31) if f3 >= 5 else reg(a[2])
                 w = (c << 20) | (src << 15) | (f3 << 12) | (reg(a[0]) << 7) | 0x73
+            elif mn.split('@')[0] in AMO_F5:
+                base = mn.split('@')[0]; bits = int(mn.split('@')[1]) if '@' in mn else 0
+                f5 = AMO_F5[base]
+                if base == 'lr.w': rd_, rs2_, mem_ = a[0], 'x0', a[1]
+                else:              rd_, rs2_, mem_ = a[0], a[1], a[2]
+                _, rs1_ = mem_operand(mem_)
+                w = (f5 << 27) | (bits << 25) | (reg(rs2_) << 20) | (rs1_ << 15) | (2 << 12) | (reg(rd_) << 7) | 0x2f
+            elif mn == 'fence':   w = 0x0ff0000f
+            elif mn == 'fence.i': w = 0x0000100f
+            elif mn == 'wfi':     w = 0x10500073
             elif mn == 'mret':   w = 0x30200073
             elif mn == '.word':  w = num(a[0])
             elif mn == 'ecall':  w = 0x00000073
