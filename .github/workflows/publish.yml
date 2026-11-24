@@ -31,9 +31,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: YosysHQ/setup-oss-cad-suite@v3
-        with:
-          version: '2026-11-23'
+      - name: Install OSS CAD Suite (pinned release, direct download)
+        run: |
+          curl -fsSL --retry 5 --retry-delay 10 -o "$RUNNER_TEMP/oss-cad.tgz" \
+            https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-11-23/oss-cad-suite-linux-x64-20261123.tgz
+          tar -xzf "$RUNNER_TEMP/oss-cad.tgz" -C "$HOME"
+          echo "$HOME/oss-cad-suite/bin" >> "$GITHUB_PATH"
       - name: Place and route (ECP5, nextpnr)
         shell: bash
         run: |
