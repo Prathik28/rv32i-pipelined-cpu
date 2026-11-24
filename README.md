@@ -8,6 +8,8 @@ levels, memory protection, precise exceptions, three interrupt sources, memory w
 hardware-handled misaligned accesses. (RISC-V rather than MIPS, but the pipeline is the classic
 MIPS-style one.)
 
+> **Also in this repository:** a separate **MIPS32** pipelined core with the classic branch delay slot in [`mips32/`](mips32/README.md).
+
 * **ISA:** RV32I + **M** + **A** + **Zicsr** + **Zifencei**, M-mode and U-mode, 4-entry **PMP**; no compressed instructions
 * **Verified** against an independent Python golden model (registers, memory, exit code, console)
   with 17 directed programs, 2 self-checking interrupt tests and 300 random hazard-dense programs,
@@ -199,4 +201,4 @@ docs/  hazard_demo.s and the generated SVGs
 * Wait states apply to the data bus only; there are no caches; instruction fetch is single-cycle
 * Interrupt sources: software, timer and external only (no PLIC/CLINT register layout)
 * Not run on real hardware; the only timing figure is the ECP5 place-and-route estimate above
-* This is a RISC-V design. A MIPS32 variant is not included.
+* This is a RISC-V design; the MIPS32 version is a separate core in [`mips32/`](mips32/README.md)
