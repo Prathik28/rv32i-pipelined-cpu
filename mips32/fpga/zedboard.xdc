@@ -1,5 +1,5 @@
-## ZedBoard (xc7z020clg484-1) constraints - UNTESTED: compare every pin with the official ZedBoard
-## master XDC (Avnet / Digilent) before programming.
+## ZedBoard (xc7z020clg484-1) constraints - used for the LED demo on a real board.
+## The BTNC reset was not separately confirmed.
 set_property -dict {PACKAGE_PIN Y9  IOSTANDARD LVCMOS33} [get_ports clk100]
 create_clock -period 10.000 -name sys_clk [get_ports clk100]
 create_generated_clock -name core_clk -source [get_ports clk100] -divide_by 4 [get_pins div_cnt_reg[1]/Q]

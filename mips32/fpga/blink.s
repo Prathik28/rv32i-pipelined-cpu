@@ -1,5 +1,5 @@
 # FPGA demo (MIPS): binary counter on the 16 LEDs (LEDS register at 0xFFFF0008) with the multiplier and
-# the divider in the delay loop. Runs forever. All-LEDs-on = the multiply/divide round trip failed.
+# the divider in the delay loop. Runs forever. LEDs staying on = the multiply/divide round trip failed.
     li    $s0, 0xFFFF0008      # LEDS register
     li    $s1, 0               # counter
     li    $s2, 250000          # delay (about 0.4 s per count at 25 MHz)
