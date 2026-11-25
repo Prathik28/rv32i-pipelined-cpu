@@ -17,5 +17,5 @@ delay:
     j    loop
 fail:
     li   x2, 0xFFFF
-    sw   x2, 16(x1)          # all LEDs on = error
+    sw   x2, 16(x1)          # LEDs stay on = error
     j    fail

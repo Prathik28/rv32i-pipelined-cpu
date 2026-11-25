@@ -135,8 +135,13 @@ a much higher clock; that is not done here.
 This is a single-seed estimate for the ECP5 family against a 25 MHz target (nextpnr stops optimising
 once the target is met, so the true limit may be somewhat higher). It says nothing exact about the
 Basys 3's Artix-7. Step-by-step instructions for a **ZedBoard** (`fpga/zedboard_top.v`, `fpga/zedboard.xdc`) are in [`docs/ZEDBOARD.md`](docs/ZEDBOARD.md). The example Basys 3 top level (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's
-100 MHz clock by 4 and shows a binary counter (`fpga/blink.s`) on the LEDs. It has been simulated but
-**never run on hardware**.
+100 MHz clock by 4 and shows a binary counter (`fpga/blink.s`) on the LEDs. The Basys 3 version has
+been simulated but **never run on hardware**.
+
+### Tested on hardware
+
+The LED counter demo (`fpga/blink.s`) **runs on a ZedBoard** (Zynq-7000, programmable logic only) at a
+25 MHz core clock. Other features are verified in simulation only.
 
 ## How it is verified
 
@@ -200,5 +205,5 @@ docs/  hazard_demo.s and the generated SVGs
 * Misaligned accesses to MMIO and misaligned atomics trap (legal); misaligned RAM accesses are handled in hardware
 * Wait states apply to the data bus only; there are no caches; instruction fetch is single-cycle
 * Interrupt sources: software, timer and external only (no PLIC/CLINT register layout)
-* Not run on real hardware; the only timing figure is the ECP5 place-and-route estimate above
+* On hardware, only the LED counter demo has been run (ZedBoard, 25 MHz); the only timing figure recorded here is the ECP5 place-and-route estimate above
 * This is a RISC-V design; the MIPS32 version is a separate core in [`mips32/`](mips32/README.md)

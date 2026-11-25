@@ -1,7 +1,9 @@
 # Running the cores on a ZedBoard (Zynq-7000, xc7z020clg484-1)
 
-**Status: simulated and synthesised with Yosys, never run on real hardware. The pin file was written
-from memory - compare every pin with the official ZedBoard master XDC before you program the board.**
+**Status: the LED counter demo has run on a real ZedBoard with both the RISC-V and the MIPS core
+(25 MHz core clock).** Only that demo was tested on hardware; all other features (traps, interrupts,
+and the rest of each test suite) are verified in simulation only. The BTNC reset was not separately
+confirmed. If your setup differs, compare the pins with the official ZedBoard master XDC.
 
 Only the programmable logic (PL) is used; the ARM processing system stays unconfigured. Vivado runs
 on Windows/Linux (not macOS), so use the lab PC.
@@ -35,13 +37,14 @@ Regenerate the program after editing the assembly:
 
 * LD0-LD7 show a **binary counter** that counts up about every 0.4 s.
 * The centre button (BTNC) resets the core and restarts the count.
-* **All eight LEDs on at once = the demo's self-check failed** (the multiplier/divider round trip was wrong).
+* All eight LEDs lighting briefly is **normal**: the count passes 255 about every 107 s and rolls over to zero.
+* **All eight LEDs staying on = the demo's self-check failed** (the multiplier/divider round trip was wrong).
 
 ## If it does not work
 
 * **Timing failure** (the core runs at 100 MHz / 4 = 25 MHz): raise `CLK_DIV` to 8 or 16 in `zedboard_top.v`.
-  Open-source place-and-route estimates for a different FPGA family were about 27 MHz (RISC-V) and 43 MHz (MIPS),
-  so the margin is thin; Artix-7 fabric is normally faster, but this was not checked in Vivado.
+  Both demos ran at 25 MHz on the board, but no Vivado timing figure has been recorded here. Open-source
+  place-and-route estimates for a different FPGA family were about 27 MHz (RISC-V) and 43 MHz (MIPS).
 * **No LED activity:** check that the program file was loaded (a wrong `$readmemh` path leaves the memory as NOPs),
   that BTNC is not stuck, and the pin assignments.
 * **Vivado warns about a generated clock:** the core clock is derived by a divider and buffered with a BUFG

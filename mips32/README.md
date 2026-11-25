@@ -102,7 +102,12 @@ its memories map to block RAM and it has no PMP/atomic/misaligned-access logic i
 
 This is a single-seed estimate for the ECP5 family against a 25 MHz target, not a result for any other
 FPGA. ZedBoard instructions are in [`../docs/ZEDBOARD.md`](../docs/ZEDBOARD.md) (`fpga/zedboard_top.v`, `fpga/zedboard.xdc`). An example Basys 3 top level (`fpga/fpga_top.v`, `fpga/basys3.xdc`) divides the Basys 3's 100 MHz clock
-by 4 and shows a binary counter (`fpga/blink.s`) on the LEDs; it has been simulated but **never run on hardware**.
+by 4 and shows a binary counter (`fpga/blink.s`) on the LEDs; the Basys 3 version has been simulated but **never run on hardware**.
+
+### Tested on hardware
+
+The LED counter demo (`fpga/blink.s`) **runs on a ZedBoard** (Zynq-7000, programmable logic only) at a
+25 MHz core clock. Other features are verified in simulation only.
 
 ## How it is verified
 
@@ -146,4 +151,4 @@ Note: `+hex=` paths cannot contain spaces.
 * No floating point (CP1), `MOVZ/MOVN`, `CLZ`, `LL/SC`, `LWC/SWC`, `TEQ`-style trap instructions
 * A branch or jump inside another branch's delay slot is undefined (as in MIPS)
 * Divide by zero is implementation-defined here (`LO = 0xFFFFFFFF`, `HI` = dividend; `INT_MIN / -1` gives `INT_MIN`) because MIPS leaves it **unpredictable** - there is no architecturally correct answer to implement
-* Not run on real hardware; the only timing figure is the ECP5 place-and-route estimate above
+* On hardware, only the LED counter demo has been run (ZedBoard, 25 MHz); the only timing figure recorded here is the ECP5 place-and-route estimate above

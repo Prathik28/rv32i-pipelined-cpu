@@ -1,4 +1,4 @@
-// ZedBoard (Zynq-7000, xc7z020clg484-1) top level for the MIPS core. NOT tested on hardware.
+// ZedBoard (Zynq-7000, xc7z020clg484-1) top level for the MIPS core. LED demo tested on a ZedBoard.
 // Only the programmable fabric is used; the ARM cores are left unconfigured.
 //   * 100 MHz board clock (pin Y9) divided by CLK_DIV (default 4 => 25 MHz) for the core
 //   * BTNC = reset, LD0..LD7 = low byte of the LEDS register (0xFFFF0008)
